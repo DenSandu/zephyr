@@ -120,9 +120,6 @@ static int ism330dhcx_enable_g_int(const struct device *dev, int enable)
 	}
 }
 
-/**
- * ism330dhcx_enable_fifo_wtm_int - FIFO WTM enable selected int pin to generate interrupt
- */
 static int ism330dhcx_enable_fifo_wtm_int(const struct device *dev, int enable)
 {
     const struct ism330dhcx_config *cfg = dev->config;
@@ -218,7 +215,11 @@ int ism330dhcx_trigger_set(const struct device *dev,
 	return -ENOTSUP;
 }
 
-
+// New function to set trigger with data
+int ism330dhcx_trigger_set_with_data(const struct device *dev,
+			   const struct sensor_trigger *trig,
+			   sensor_trigger_handler_with_data_t handler)
+{
 	struct ism330dhcx_data *ism330dhcx = dev->data;
 	const struct ism330dhcx_config *cfg = dev->config;
 
@@ -425,7 +426,6 @@ int ism330dhcx_init_interrupt(const struct device *dev)
 		return -EIO;
 	}
 
-	/* enable interrupt on int1/int2 in pulse mode */
 	if (ism330dhcx_data_ready_mode_set(ism330dhcx->ctx,
 					   ISM330DHCX_DRDY_PULSED) < 0) {
 		LOG_ERR("Could not set pulse mode");

@@ -188,7 +188,8 @@ static int ism330dhcx_accel_range_set(const struct device *dev, int32_t range)
 	return 0;
 }
 
-/*
+/* DEN: function to set FIFO watermark 
+ *
  * @brief Sets the FIFO watermark level.
  * 
  * @param dev Pointer to the device structure.
@@ -225,6 +226,7 @@ static int ism330dhcx_fifo_wtm_set(const struct device *dev, uint16_t val)
 	
     return 0;
 }
+
 
 static int ism330dhcx_accel_config(const struct device *dev,
 				   enum sensor_channel chan,
@@ -303,8 +305,7 @@ static int ism330dhcx_attr_set(const struct device *dev,
 			       enum sensor_attribute attr,
 			       const struct sensor_value *val)
 {
-
-	/* check fifo, else switch on channel to set everything else... */
+	// switch on attr: check fifo, then switch on channel to set everything else...
 	switch(attr) {
 		case SENSOR_ATTR_FIFO_WATERMARK:
 			// Set FIFO watermark level to val->val1 samples
@@ -722,7 +723,6 @@ static DEVICE_API(sensor, ism330dhcx_api_funcs) = {
 #if CONFIG_ISM330DHCX_TRIGGER
 	.trigger_set = ism330dhcx_trigger_set,
 	.trigger_set_with_data = ism330dhcx_trigger_set_with_data,
-
 #endif
 	.sample_fetch = ism330dhcx_sample_fetch,
 	.channel_get = ism330dhcx_channel_get,

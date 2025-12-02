@@ -375,11 +375,11 @@ enum sensor_attribute {
 	 * Maximum value describing a sensor attribute type.
 	 */
 	SENSOR_ATTR_MAX = INT16_MAX,
-
-	/** FIFO watermark level in number of samples */
+	
+	/** FIFO watermark level */
 	SENSOR_ATTR_FIFO_WATERMARK,
 
-	/** Accelerometer batching rate in Hz */
+	/** FIFO operating mode */
 	SENSOR_ATTR_FIFO_XL_BATCH,
 };
 
@@ -852,28 +852,6 @@ static inline int sensor_trigger_set(const struct device *dev,
 	return api->trigger_set(dev, trig, handler);
 }
 
-/**
- * @brief Activate a sensor's trigger and set the trigger handler with data
- *
- * The handler will be called from a thread, so I2C or SPI operations are
- * safe.  However, the thread's stack is limited and defined by the
- * driver.  It is currently up to the caller to ensure that the handler
- * does not overflow the stack.
- *
- * The user-allocated trigger will be stored by the driver as a pointer, rather
- * than a copy, and passed back to the handler. This enables the handler to use
- * CONTAINER_OF to retrieve a context pointer when the trigger is embedded in a
- * larger struct and requires that the trigger is not allocated on the stack.
- *
- * @funcprops \supervisor
- *
- * @param dev Pointer to the sensor device
- * @param trig The trigger to activate
- * @param handler The function that should be called when the trigger
- * fires, with associated raw data
- *
- * @return 0 if successful, negative errno code if failure.
- */
 static inline int sensor_trigger_set_with_data(const struct device *dev,
 				     const struct sensor_trigger *trig,
 				     sensor_trigger_handler_with_data_t handler) // DEN

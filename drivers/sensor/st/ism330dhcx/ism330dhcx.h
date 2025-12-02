@@ -91,7 +91,6 @@ struct ism330dhcx_data {
 	uint8_t gyro_fs;
 
 #ifdef CONFIG_ISM330DHCX_TRIGGER
-	/* fifo watermark handler */
 	sensor_trigger_handler_with_data_t handler_fifo_wtm;
 	const struct sensor_trigger *trig_fifo_wtm;
 	struct gpio_callback gpio_cb;
@@ -127,7 +126,6 @@ int ism330dhcx_shub_config(const struct device *dev, enum sensor_channel chan,
 int ism330dhcx_trigger_set(const struct device *dev,
 			   const struct sensor_trigger *trig,
 			   sensor_trigger_handler_t handler);
-/* passsing data from fifo as a parameter */
 int ism330dhcx_trigger_set_with_data(const struct device *dev,
 			   const struct sensor_trigger *trig,
 			   sensor_trigger_handler_with_data_t handler);
